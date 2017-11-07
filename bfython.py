@@ -79,3 +79,18 @@ class Bfython:
                         self.bytecode += bcdict[char]
                     except:
                         raise Exception("Unrecognized command character!")
+
+    def execute(self):
+        for i in range(0, len(self.bytecode)):
+            if self.bytecode[i] == INC:
+                self.add(1)
+            elif self.bytecode[i] == DEC:
+                self.add(-1)
+            elif self.bytecode[i] == NCP:
+                self.move(1)
+            elif self.bytecode[i] == DCP:
+                self.move(-1)
+            elif self.bytecode[i] = RD:
+                self.read()
+            elif self.bytecode[i] = WRT:
+                self.write()
