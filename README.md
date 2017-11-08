@@ -1,2 +1,2 @@
 # bfython
-Brainfuck interpreter written in python
+Brainf**k interpreter written in python
