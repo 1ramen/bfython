@@ -1,2 +1,2 @@
-from getch import *
-from cli import *
+from IO.getch import getch
+from IO.cli import *

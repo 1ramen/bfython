@@ -1,6 +1,5 @@
 """Brainf**k interpreter"""
-import IO
-import environment
+import core
 
 def main():
     """Load and execute a brainf**k source file"""

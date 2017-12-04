@@ -1,4 +1,4 @@
-import environment
+import core.environment
 
 class Token:
     """Syntactic 'word' that contains meaning in the language"""
