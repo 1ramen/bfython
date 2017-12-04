@@ -30,7 +30,7 @@ class Cell:
     def input(self):
         """Set the cell value to user input"""
         from IO.getch import getch
-        self.value = self.clamp(getch())
+        self.value = self.clamp(ord(getch()))
 
     def output(self):
         """Print the current cell value"""
@@ -93,7 +93,7 @@ class Environment:
             except IndexError:
                 raise Exception("unmatched end of loop ({})".format(self.cmdp))
 
-    def execute(self, source: str):
+    def parse(self, source: list):
         while self.cmdp < len(source):
             token = source[self.cmdp]
             try:
