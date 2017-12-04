@@ -58,3 +58,46 @@ class Tape:
 
     def decrement_pointer(self):
         self._pointer.decrement()
+
+class Environment:
+    def __init__(self, length: int, size: int, wrapping: bool, end_of_loop: int):
+        self.length = length
+        self.size = size
+        self.wrapping = wrapping
+        self.tape = Tape(self.length, self.size, self.wrapping)
+        self.end_of_loop = end_of_loop
+        self.loop_stack = []
+        self.cmdp = 0
+        self.TOKENS = {
+            '+': self.tape.active.increment,
+            '-': self.tape.active.decrement,
+            '.': self.tape.active.output,
+            ',': self.tape.active.input,
+            '>': self.tape.increment_pointer,
+            '<': self.tape.decrement_pointer,
+            '[': self.open_loop,
+            ']': self.close_loop,
+        }
+
+    def open_loop(self):
+        """Add the current command pointer to the loop stack"""
+        self.loop_stack.append(self.cmdp)
+
+    def close_loop(self):
+        """Escape a loop or return to the beginning"""
+        if self.tape.active.value == self.end_of_loop:
+            self.loop_stack.pop()
+        else:
+            try:
+                self.cmdp = self.loop_stack[-1]
+            except IndexError:
+                raise Exception("unmatched end of loop ({})".format(self.cmdp))
+
+    def execute(self, source: str):
+        while self.cmdp < len(source):
+            token = source[self.cmdp]
+            try:
+                self.TOKENS[token]()
+            except KeyError:
+                raise Exception("unrecognized command ({})".format(self.cmdp))
+            self.cmdp += 1
