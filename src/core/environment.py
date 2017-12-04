@@ -53,6 +53,18 @@ class Tape:
     def active(self):
         return self._memory[self._pointer.value]
 
+    def increment(self):
+        self.active.increment()
+
+    def decrement(self):
+        self.active.decrement()
+
+    def output(self):
+        self.active.output()
+
+    def input(self):
+        self.active.input()
+
     def increment_pointer(self):
         self._pointer.increment()
 
@@ -69,10 +81,10 @@ class Environment:
         self.loop_stack = []
         self.cmdp = 0
         self.TOKENS = {
-            '+': self.tape.active.increment,
-            '-': self.tape.active.decrement,
-            '.': self.tape.active.output,
-            ',': self.tape.active.input,
+            '+': self.tape.increment,
+            '-': self.tape.decrement,
+            '.': self.tape.output,
+            ',': self.tape.input,
             '>': self.tape.increment_pointer,
             '<': self.tape.decrement_pointer,
             '[': self.open_loop,
@@ -97,7 +109,11 @@ class Environment:
         while self.cmdp < len(source):
             token = source[self.cmdp]
             try:
+                print("@{}:  {} {}".format(self.tape._pointer.value, token, self.tape.active.value))
                 self.TOKENS[token]()
             except KeyError:
                 raise Exception("unrecognized command ({})".format(self.cmdp))
+            except KeyboardInterrupt:
+                open("dump.txt", 'w').write(str(self.tape))
+                raise KeyboardInterrupt
             self.cmdp += 1
