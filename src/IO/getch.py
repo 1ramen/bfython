@@ -57,16 +57,15 @@ class _Getch:
 screen. From http://code.activestate.com/recipes/134892/"""
     def __init__(self):
         try:
-            self.impl = BF.IO._GetchWindows()
+            self.impl = _GetchWindows()
         except ImportError:
             try:
-                self.impl = BF.IO._GetchMacCarbon()
+                self.impl = _GetchMacCarbon()
             except (AttributeError, ImportError):
-                self.impl = BF.IO._GetchUnix()
+                self.impl = _GetchUnix()
 
     def __call__(self): return self.impl()
 
-@staticmethod
 def getch() -> chr:
     """Get single chr from console"""
     inkey = _Getch()
