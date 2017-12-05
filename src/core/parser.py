@@ -12,6 +12,11 @@ def lex(file: str, comment: str) -> list:
             tokens += ch
     return tokens
 
-def parse(tokens: list, length: int, size: int, wrapping: bool, end_of_loop: int):
+def parse(tokens: list, length: int, size: int, wrapping: bool, end_of_loop: int) -> core.environment.Tape:
     env = core.environment.Environment(length, size, wrapping, end_of_loop)
     env.parse(tokens)
+    return env.tape
+
+def dump(file: str, tape: core.environment.Tape):
+    dump_file = open(file, 'w')
+    dump_file.write(str(tape))
